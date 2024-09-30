@@ -28,7 +28,7 @@ const PORT = process.env.PORT || 3001;
 const dynamoClient = new client_dynamodb_1.DynamoDBClient({});
 const docClient = lib_dynamodb_1.DynamoDBDocumentClient.from(dynamoClient);
 // Middleware
-app.use((0, cors_1.default)({ origin: "http://localhost:5173", credentials: true }));
+app.use((0, cors_1.default)({ origin: "https://github-integration-s21e.vercel.app", credentials: true }));
 app.use(express_1.default.json());
 app.use((0, express_session_1.default)({
     secret: process.env.SESSION_SECRET,
@@ -41,7 +41,7 @@ app.use(passport_1.default.session());
 passport_1.default.use(new passport_github2_1.Strategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: "http://localhost:3001/auth/github/callback",
+    callbackURL: "https://github-integration-opal.vercel.app/auth/github/callback",
 }, (accessToken, refreshToken, profile, done) => __awaiter(void 0, void 0, void 0, function* () {
     const user = {
         id: profile.id,
@@ -118,7 +118,7 @@ function createUsersTableIfNotExists() {
 // Routes
 app.get("/auth/github", passport_1.default.authenticate("github", { scope: ["repo"] }));
 app.get("/auth/github/callback", passport_1.default.authenticate("github", { failureRedirect: "/login" }), (req, res) => {
-    res.redirect("http://localhost:5173/dashboard");
+    res.redirect("https://github-integration-s21e.vercel.app/dashboard");
 });
 app.get("/api/user", (req, res) => {
     res.json(req.user || null);

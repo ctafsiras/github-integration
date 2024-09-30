@@ -23,7 +23,7 @@ const dynamoClient = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(dynamoClient);
 
 // Middleware
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: "https://github-integration-s21e.vercel.app", credentials: true }));
 app.use(express.json());
 app.use(
   session({
@@ -41,7 +41,7 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-      callbackURL: "http://localhost:3001/auth/github/callback",
+      callbackURL: "https://github-integration-opal.vercel.app/auth/github/callback",
     },
     async (
       accessToken: string,
@@ -130,7 +130,7 @@ app.get(
   "/auth/github/callback",
   passport.authenticate("github", { failureRedirect: "/login" }),
   (req, res) => {
-    res.redirect("http://localhost:5173/dashboard");
+    res.redirect("https://github-integration-s21e.vercel.app/dashboard");
   }
 );
 

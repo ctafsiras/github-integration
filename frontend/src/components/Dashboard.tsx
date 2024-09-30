@@ -8,7 +8,7 @@ const Dashboard: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/user', { credentials: 'include' })
+    fetch('https://github-integration-opal.vercel.app/api/user', { credentials: 'include' })
       .then(res => res.json())
       .then(data => setUser(data));
   }, []);
