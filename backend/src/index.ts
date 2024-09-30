@@ -104,9 +104,13 @@ async function createUsersTableIfNotExists() {
         AttributeDefinitions: [{ AttributeName: "id", AttributeType: "S" }],
         ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 }
       };
-
       try {
-        await dynamoClient.send(new CreateTableCommand(params));
+        await dynamoClient.send(new CreateTableCommand({
+          TableName: "Users",
+          KeySchema: [{ AttributeName: "id", KeyType: "HASH" }],
+          AttributeDefinitions: [{ AttributeName: "id", AttributeType: "S" }],
+          ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 }
+        }));
         console.log("Users table created successfully");
       } catch (createError) {
         console.error("Error creating Users table:", createError);
@@ -134,9 +138,9 @@ app.get("/api/user", (req, res) => {
   res.json(req.user || null);
 });
 
-app.post("/api/feedback", async (req, res) => {
-  const { title, body } = req.body;
-  const user = req.user as any;
+app.post("/api/feedback", async (req:any, res:any) => {
+  const { title, body } = req.body as { title: string; body: string };
+  const user = req.user as { accessToken?: string } | undefined;
 
   if (!user || !user.accessToken) {
     return res.status(401).json({ error: "Unauthorized" });
